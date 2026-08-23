@@ -1,40 +1,38 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>注文詳細</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 min-h-screen py-10">
-    <div class="max-w-xl mx-auto px-4">
-        <a href="{% url 'catalog_list' %}" class="text-sm text-blue-600 hover:underline">&larr; 一覧に戻る</a>
+{% extends "base.html" %}
 
-        <div class="bg-white rounded-lg shadow p-6 mt-4">
-            <div class="flex items-center justify-between mb-4">
-                <h1 class="text-2xl font-bold">注文 #{{ order.id }}</h1>
-                {% if order.status == 'paid' %}
-                    <span class="inline-block text-xs bg-green-600 text-white rounded px-2 py-1">支払い完了</span>
-                {% elif order.status == 'failed' %}
-                    <span class="inline-block text-xs bg-red-600 text-white rounded px-2 py-1">失敗</span>
-                {% else %}
-                    <span class="inline-block text-xs bg-gray-500 text-white rounded px-2 py-1">処理中</span>
-                {% endif %}
-            </div>
+{% block title %}注文詳細{% endblock %}
 
-            <div class="space-y-3 mb-6">
-                {% for order_item in order.items.all %}
-                    <div class="flex items-center justify-between text-sm">
-                        <span>{{ order_item.item.name }} &times; {{ order_item.quantity }}</span>
-                        <span class="font-semibold">¥{{ order_item.subtotal|floatformat:0 }}</span>
-                    </div>
-                {% endfor %}
-            </div>
+{% block content %}
+    <div class="py-10">
+        <div class="max-w-xl mx-auto px-4">
+            <a href="{% url 'catalog_list' %}" class="text-sm text-blue-600 hover:underline">&larr; 一覧に戻る</a>
 
-            <div class="flex items-center justify-between border-t pt-4">
-                <p class="font-semibold">合計</p>
-                <p class="text-xl font-bold">¥{{ order.total|floatformat:0 }}</p>
+            <div class="bg-white rounded-lg shadow p-6 mt-4">
+                <div class="flex items-center justify-between mb-4">
+                    <h1 class="text-2xl font-bold">注文 #{{ order.id }}</h1>
+                    {% if order.status == 'paid' %}
+                        <span class="inline-block text-xs bg-green-600 text-white rounded px-2 py-1">支払い完了</span>
+                    {% elif order.status == 'failed' %}
+                        <span class="inline-block text-xs bg-red-600 text-white rounded px-2 py-1">失敗</span>
+                    {% else %}
+                        <span class="inline-block text-xs bg-gray-500 text-white rounded px-2 py-1">処理中</span>
+                    {% endif %}
+                </div>
+
+                <div class="space-y-3 mb-6">
+                    {% for order_item in order.items.all %}
+                        <div class="flex items-center justify-between text-sm">
+                            <span>{{ order_item.item.name }} &times; {{ order_item.quantity }}</span>
+                            <span class="font-semibold">¥{{ order_item.subtotal|floatformat:0 }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="flex items-center justify-between border-t pt-4">
+                    <p class="font-semibold">合計</p>
+                    <p class="text-xl font-bold">¥{{ order.total|floatformat:0 }}</p>
+                </div>
             </div>
         </div>
     </div>
-</body>
-</html>
+{% endblock %}

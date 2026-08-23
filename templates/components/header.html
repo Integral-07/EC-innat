@@ -1,0 +1,22 @@
+<header class="bg-white shadow">
+    <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+        <a href="{% url 'catalog_list' %}" class="text-lg font-bold text-gray-900">IN-NAT-EC</a>
+        <nav class="flex items-center gap-5">
+            {% if user.is_authenticated %}
+                <a href="{% url 'cart_detail' %}" class="text-gray-700 hover:text-blue-600" aria-label="カート">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                </a>
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="text-sm text-gray-600 hover:underline">ログアウト</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}" class="text-sm text-blue-600 hover:underline">ログイン</a>
+            {% endif %}
+        </nav>
+    </div>
+</header>

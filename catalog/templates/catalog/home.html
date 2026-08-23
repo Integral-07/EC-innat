@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>文具舎コトノハ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white min-h-screen flex flex-col text-gray-800">
+    <header class="border-b">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+            <span class="text-lg font-bold tracking-wide">文具舎コトノハ</span>
+            <nav class="flex items-center gap-6 text-sm text-gray-600">
+                <span>商品一覧</span>
+                <span>会社概要</span>
+                <span>お問い合わせ</span>
+                <a href="{% url 'login' %}" class="text-gray-400 hover:text-gray-600">会員ログイン</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-1">
+        <section class="bg-amber-50 py-16">
+            <div class="max-w-5xl mx-auto px-4 text-center">
+                <h1 class="text-3xl font-bold mb-4">毎日の"書く"を、少し豊かに。</h1>
+                <p class="text-gray-600">ノート・筆記具から紙雑貨まで、こだわりの文房具を取り揃えています。</p>
+            </div>
+        </section>
+
+        <section class="max-w-5xl mx-auto px-4 py-16">
+            <h2 class="text-xl font-bold mb-8 text-center">おすすめ商品</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <div class="border rounded-lg p-5">
+                    <p class="font-semibold mb-2">方眼ノート A5</p>
+                    <p class="text-sm text-gray-500">書きやすさにこだわった定番ノート。</p>
+                </div>
+                <div class="border rounded-lg p-5">
+                    <p class="font-semibold mb-2">万年筆インク セット</p>
+                    <p class="text-sm text-gray-500">発色にこだわった全6色のインクセット。</p>
+                </div>
+                <div class="border rounded-lg p-5">
+                    <p class="font-semibold mb-2">レザー ペンケース</p>
+                    <p class="text-sm text-gray-500">経年変化を楽しめる牛革のペンケース。</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="border-t">
+        <div class="max-w-5xl mx-auto px-4 py-6 text-center text-xs text-gray-400">
+            &copy; 2026 文具舎コトノハ
+        </div>
+    </footer>
+</body>
+</html>

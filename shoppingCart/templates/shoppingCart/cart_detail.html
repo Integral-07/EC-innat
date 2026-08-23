@@ -1,57 +1,47 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>カート</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 min-h-screen py-10">
-    <div class="max-w-xl mx-auto px-4">
-        <a href="{% url 'catalog_list' %}" class="text-sm text-blue-600 hover:underline">&larr; 一覧に戻る</a>
+{% extends "base.html" %}
 
-        <h1 class="text-2xl font-bold mt-4 mb-6">カート</h1>
+{% block title %}カート{% endblock %}
 
-        {% if messages %}
-            <div class="mb-4 space-y-2">
-                {% for message in messages %}
-                    <p class="text-sm text-red-600">{{ message }}</p>
+{% block content %}
+    <div class="py-10">
+        <div class="max-w-xl mx-auto px-4">
+            <a href="{% url 'catalog_list' %}" class="text-sm text-blue-600 hover:underline">&larr; 一覧に戻る</a>
+
+            <h1 class="text-2xl font-bold mt-4 mb-6">カート</h1>
+
+            <div class="space-y-4">
+                {% for cart_item in cart_items %}
+                    <div class="bg-white rounded-lg shadow p-5 flex items-center justify-between">
+                        <div>
+                            <p class="font-semibold">{{ cart_item.item.name }}</p>
+                            <p class="text-sm text-gray-500">¥{{ cart_item.item.price|floatformat:0 }} &times; {{ cart_item.quantity }}</p>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <p class="font-bold">¥{{ cart_item.subtotal|floatformat:0 }}</p>
+                            <form method="post" action="{% url 'cart_item_delete' item_id=cart_item.item.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="text-sm text-red-600 hover:underline">削除</button>
+                            </form>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-center text-gray-500">カートに商品がありません。</p>
                 {% endfor %}
             </div>
-        {% endif %}
 
-        <div class="space-y-4">
-            {% for cart_item in cart_items %}
-                <div class="bg-white rounded-lg shadow p-5 flex items-center justify-between">
-                    <div>
-                        <p class="font-semibold">{{ cart_item.item.name }}</p>
-                        <p class="text-sm text-gray-500">¥{{ cart_item.item.price|floatformat:0 }} &times; {{ cart_item.quantity }}</p>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <p class="font-bold">¥{{ cart_item.subtotal|floatformat:0 }}</p>
-                        <form method="post" action="{% url 'cart_item_delete' item_id=cart_item.item.id %}">
-                            {% csrf_token %}
-                            <button type="submit" class="text-sm text-red-600 hover:underline">削除</button>
-                        </form>
-                    </div>
+            {% if cart_items %}
+                <div class="bg-white rounded-lg shadow p-5 mt-6 flex items-center justify-between">
+                    <p class="font-semibold">合計</p>
+                    <p class="text-xl font-bold">¥{{ total|floatformat:0 }}</p>
                 </div>
-            {% empty %}
-                <p class="text-center text-gray-500">カートに商品がありません。</p>
-            {% endfor %}
+
+                <form method="post" action="{% url 'cart_checkout' %}" class="mt-4">
+                    {% csrf_token %}
+                    <button type="submit" class="w-full py-3 rounded-lg font-semibold text-white bg-blue-600 hover:bg-blue-700">
+                        購入する
+                    </button>
+                </form>
+            {% endif %}
         </div>
-
-        {% if cart_items %}
-            <div class="bg-white rounded-lg shadow p-5 mt-6 flex items-center justify-between">
-                <p class="font-semibold">合計</p>
-                <p class="text-xl font-bold">¥{{ total|floatformat:0 }}</p>
-            </div>
-
-            <form method="post" action="{% url 'cart_checkout' %}" class="mt-4">
-                {% csrf_token %}
-                <button type="submit" class="w-full py-3 rounded-lg font-semibold text-white bg-blue-600 hover:bg-blue-700">
-                    購入する
-                </button>
-            </form>
-        {% endif %}
     </div>
-</body>
-</html>
+{% endblock %}
