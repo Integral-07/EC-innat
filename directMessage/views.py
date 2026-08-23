@@ -4,6 +4,7 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
+from .ai_reply import generate_decline_reply
 from .models import Conversation, Message
 
 User = get_user_model()
@@ -66,4 +67,12 @@ def message_create(request, conversation_id):
     body = request.POST.get('body', '').strip()
     if body:
         Message.objects.create(conversation=conversation, sender=request.user, body=body)
+    return redirect('conversation_detail', conversation_id=conversation.id)
+
+
+@login_required
+@require_POST
+def ai_decline_reply(request, conversation_id):
+    conversation = get_object_or_404(Conversation, pk=conversation_id, professor=request.user)
+    Message.objects.create(conversation=conversation, sender=request.user, body=generate_decline_reply())
     return redirect('conversation_detail', conversation_id=conversation.id)

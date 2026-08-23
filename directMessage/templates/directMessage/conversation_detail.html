@@ -27,6 +27,15 @@
                 {% endfor %}
             </div>
 
+            {% if conversation.professor == request.user %}
+                <form method="post" action="{% url 'ai_decline_reply' conversation_id=conversation.id %}" class="mb-2">
+                    {% csrf_token %}
+                    <button type="submit" class="w-full py-2 rounded-lg text-sm font-semibold text-gray-600 border border-gray-300 hover:bg-gray-100">
+                        AIで断る
+                    </button>
+                </form>
+            {% endif %}
+
             <form method="post" action="{% url 'message_create' conversation_id=conversation.id %}" class="flex gap-2">
                 {% csrf_token %}
                 <input

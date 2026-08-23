@@ -11,7 +11,7 @@ SEED_PROFESSORS = [
 
 
 class Command(BaseCommand):
-    help = "directMessage の相談相手となる教授アカウントを開発用に投入します"
+    help = "directMessage の相談相手となる教授アカウントを開発用に投入します（パスワードは 'password'）"
 
     def handle(self, *args, **options):
         created_count = 0
@@ -25,7 +25,7 @@ class Command(BaseCommand):
                 },
             )
             if created:
-                user.set_unusable_password()
+                user.set_password("password")
                 user.save()
                 created_count += 1
 

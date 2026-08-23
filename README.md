@@ -14,9 +14,12 @@
 
 ```bash
 python3 manage.py migrate
-python3 manage.py seed_catalog   # 開発用の科目データを投入
+python3 manage.py seed_catalog      # 開発用の科目データを投入
+python3 manage.py seed_professors   # DM相手の教授アカウントを投入（パスワードは "password"）
 python3 manage.py runserver
 ```
+
+学生役のアカウントは `python3 manage.py createsuperuser` などで別途作成してください（サインアップ画面は未実装）。
 
 主要な URL:
 
