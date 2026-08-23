@@ -1,6 +1,8 @@
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
@@ -50,10 +52,16 @@ def conversation_detail(request, conversation_id):
         Conversation.objects.filter(Q(student=request.user) | Q(professor=request.user)),
         pk=conversation_id,
     )
+    messages_list = list(conversation.messages.select_related('sender'))
+    last_message = messages_list[-1] if messages_list else None
+    ai_decline_disabled = bool(last_message and last_message.sender_id == conversation.professor_id)
+
     return render(request, 'directMessage/conversation_detail.html', {
         'conversation': conversation,
         'other': conversation.other_participant(request.user),
-        'messages_list': conversation.messages.select_related('sender'),
+        'messages_list': messages_list,
+        'ai_decline_disabled': ai_decline_disabled,
+        'debug': settings.DEBUG,
     })
 
 
@@ -74,5 +82,21 @@ def message_create(request, conversation_id):
 @require_POST
 def ai_decline_reply(request, conversation_id):
     conversation = get_object_or_404(Conversation, pk=conversation_id, professor=request.user)
-    Message.objects.create(conversation=conversation, sender=request.user, body=generate_decline_reply())
+    Message.objects.create(conversation=conversation, sender=request.user, body=generate_decline_reply(conversation.id))
+    return redirect('conversation_detail', conversation_id=conversation.id)
+
+
+@login_required
+@require_POST
+def ai_decline_reply_debug(request, conversation_id):
+    if not settings.DEBUG:
+        raise Http404
+
+    conversation = get_object_or_404(Conversation, pk=conversation_id, professor=request.user)
+    Message.objects.create(
+        conversation=conversation,
+        sender=conversation.student,
+        body="[デバッグ] 単位をいただけないでしょうか。",
+    )
+    Message.objects.create(conversation=conversation, sender=request.user, body=generate_decline_reply(conversation.id))
     return redirect('conversation_detail', conversation_id=conversation.id)
