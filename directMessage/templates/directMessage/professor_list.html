@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}教授一覧{% endblock %}
+
+{% block content %}
+    <div class="py-10">
+        <div class="max-w-xl mx-auto px-4">
+            <a href="{% url 'dm_inbox' %}" class="text-sm text-blue-600 hover:underline">&larr; メッセージ一覧に戻る</a>
+
+            <h1 class="text-2xl font-bold mt-4 mb-6">教授一覧</h1>
+
+            <div class="space-y-3">
+                {% for professor in professors %}
+                    <div class="bg-white rounded-lg shadow p-4 flex items-center justify-between">
+                        <p class="font-semibold">{{ professor.display_name|default:professor.username }}</p>
+                        <form method="post" action="{% url 'conversation_start' professor_id=professor.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="text-sm text-blue-600 hover:underline">相談する</button>
+                        </form>
+                    </div>
+                {% empty %}
+                    <p class="text-center text-gray-500">教授が登録されていません。</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

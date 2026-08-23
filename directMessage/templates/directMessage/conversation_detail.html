@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}{{ other.display_name|default:other.username }}とのメッセージ{% endblock %}
+
+{% block content %}
+    <div class="py-10">
+        <div class="max-w-xl mx-auto px-4">
+            <a href="{% url 'dm_inbox' %}" class="text-sm text-blue-600 hover:underline">&larr; メッセージ一覧に戻る</a>
+
+            <h1 class="text-xl font-bold mt-4 mb-4">{{ other.display_name|default:other.username }}</h1>
+
+            <div class="bg-white rounded-lg shadow p-4 flex flex-col gap-3 mb-4">
+                {% for message in messages_list %}
+                    {% if message.sender == request.user %}
+                        <div class="flex justify-end items-end gap-1">
+                            <span class="text-[10px] text-gray-400">{{ message.created_at|date:"H:i" }}</span>
+                            <div class="bg-green-500 text-white rounded-2xl rounded-br-sm px-4 py-2 max-w-[75%] whitespace-pre-line">{{ message.body }}</div>
+                        </div>
+                    {% else %}
+                        <div class="flex justify-start items-end gap-1">
+                            <div class="bg-gray-200 text-gray-900 rounded-2xl rounded-bl-sm px-4 py-2 max-w-[75%] whitespace-pre-line">{{ message.body }}</div>
+                            <span class="text-[10px] text-gray-400">{{ message.created_at|date:"H:i" }}</span>
+                        </div>
+                    {% endif %}
+                {% empty %}
+                    <p class="text-center text-gray-400 text-sm">まだメッセージがありません。</p>
+                {% endfor %}
+            </div>
+
+            <form method="post" action="{% url 'message_create' conversation_id=conversation.id %}" class="flex gap-2">
+                {% csrf_token %}
+                <input
+                    type="text"
+                    name="body"
+                    placeholder="メッセージを入力"
+                    class="flex-1 border rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+                    autocomplete="off"
+                    required
+                >
+                <button type="submit" class="bg-green-500 text-white rounded-full px-5 py-2 font-semibold hover:bg-green-600">
+                    送信
+                </button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
