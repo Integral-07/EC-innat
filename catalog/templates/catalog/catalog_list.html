@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>商品一覧</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen py-10">
+    <h1 class="text-2xl font-bold text-center mb-8">商品一覧</h1>
+    <div class="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 px-4">
+        {% for item in items %}
+            <a href="{% url 'catalog_details' item_id=item.id %}" class="bg-white rounded-lg shadow p-5 {% if item.is_soldout %}opacity-60{% endif %}">
+                <h2 class="text-lg font-semibold mb-2">
+                    {{ item.name }}
+                    {% if item.is_soldout %}
+                        <span class="ml-2 inline-block text-xs bg-red-600 text-white rounded px-2 py-0.5 align-middle">売り切れ</span>
+                    {% endif %}
+                </h2>
+                <p class="text-sm text-gray-600 mb-4 whitespace-pre-line">{{ item.description }}</p>
+                <p class="text-lg font-bold">¥{{ item.price|floatformat:0 }}</p>
+            </a>
+        {% empty %}
+            <p class="col-span-full text-center text-gray-500">商品がありません。</p>
+        {% endfor %}
+    </div>
+</body>
+</html>
