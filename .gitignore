@@ -17,6 +17,10 @@ venv/
 env/
 .venv/
 
+# Coverage
+.coverage
+htmlcov/
+
 # Editor / OS
 .DS_Store
 .vscode/

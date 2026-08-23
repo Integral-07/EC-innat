@@ -1,0 +1,17 @@
+[run]
+source = .
+omit =
+    manage.py
+    */migrations/*
+    */management/commands/*
+    ec_innat/wsgi.py
+    ec_innat/asgi.py
+    ec_innat/settings.py
+    */tests.py
+    e2e_tests/*
+    .venv/*
+    venv/*
+
+[report]
+skip_empty = True
+show_missing = True
