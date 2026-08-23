@@ -10,10 +10,15 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
 from pathlib import Path
+
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+load_dotenv(BASE_DIR / '.env')
 
 
 # Quick-start development settings - unsuitable for production
@@ -111,6 +116,9 @@ LOGIN_REDIRECT_URL = '/'
 # 決済ゲートウェイの実装クラス（ドット区切りパス）。
 # 開発時はダミー実装、本番では外部決済サービスのクライアントに差し替える。
 PAYMENT_GATEWAY = 'payments.gateways.DummyPaymentGateway'
+
+# AIによる断り返信生成に使う Gemini API キー
+GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', '')
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
