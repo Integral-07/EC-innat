@@ -3,6 +3,12 @@
         <a href="{% url 'catalog_list' %}" class="text-lg font-bold text-gray-900">IN-NAT-EC</a>
         <nav class="flex items-center gap-5">
             {% if user.is_authenticated %}
+                <a href="{% url 'dm_inbox' %}" class="text-gray-700 hover:text-blue-600" aria-label="メッセージ">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                        <path d="m22 6-10 7L2 6"></path>
+                    </svg>
+                </a>
                 <a href="{% url 'cart_detail' %}" class="text-gray-700 hover:text-blue-600" aria-label="カート">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="9" cy="21" r="1"></circle>

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'catalog',
     'shoppingCart',
     'payments',
+    'directMessage',
 ]
 
 MIDDLEWARE = [

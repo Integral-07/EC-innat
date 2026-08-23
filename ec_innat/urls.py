@@ -25,4 +25,5 @@ urlpatterns = [
     path('catalog/', include('catalog.urls')),
     path('cart/', include('shoppingCart.urls')),
     path('orders/', include('payments.urls')),
+    path('messages/', include('directMessage.urls')),
 ]
