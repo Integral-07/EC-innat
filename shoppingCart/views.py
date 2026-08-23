@@ -1,8 +1,10 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
 from catalog.models import Item
+from payments.services import EmptyCartError, checkout
 
 from .models import CartItem
 
@@ -31,3 +33,15 @@ def cart_item_create(request, item_id):
 def cart_item_delete(request, item_id):
     CartItem.objects.filter(user=request.user, item_id=item_id).delete()
     return redirect('cart_detail')
+
+
+@login_required
+@require_POST
+def cart_checkout(request):
+    cart_items = CartItem.objects.filter(user=request.user).select_related('item')
+    try:
+        order = checkout(request.user, cart_items)
+    except EmptyCartError:
+        messages.error(request, 'カートが空です。')
+        return redirect('cart_detail')
+    return redirect('order_detail', order_id=order.id)

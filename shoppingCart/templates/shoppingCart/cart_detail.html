@@ -11,6 +11,14 @@
 
         <h1 class="text-2xl font-bold mt-4 mb-6">カート</h1>
 
+        {% if messages %}
+            <div class="mb-4 space-y-2">
+                {% for message in messages %}
+                    <p class="text-sm text-red-600">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
         <div class="space-y-4">
             {% for cart_item in cart_items %}
                 <div class="bg-white rounded-lg shadow p-5 flex items-center justify-between">
@@ -36,6 +44,13 @@
                 <p class="font-semibold">合計</p>
                 <p class="text-xl font-bold">¥{{ total|floatformat:0 }}</p>
             </div>
+
+            <form method="post" action="{% url 'cart_checkout' %}" class="mt-4">
+                {% csrf_token %}
+                <button type="submit" class="w-full py-3 rounded-lg font-semibold text-white bg-blue-600 hover:bg-blue-700">
+                    購入する
+                </button>
+            </form>
         {% endif %}
     </div>
 </body>

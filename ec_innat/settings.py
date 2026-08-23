@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'accounts',
     'catalog',
     'shoppingCart',
+    'payments',
 ]
 
 MIDDLEWARE = [
@@ -105,6 +106,10 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTH_USER_MODEL = 'accounts.User'
 
 LOGIN_REDIRECT_URL = '/'
+
+# 決済ゲートウェイの実装クラス（ドット区切りパス）。
+# 開発時はダミー実装、本番では外部決済サービスのクライアントに差し替える。
+PAYMENT_GATEWAY = 'payments.gateways.DummyPaymentGateway'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
